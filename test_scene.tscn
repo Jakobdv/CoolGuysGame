@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://bvdl60r2v3ta1"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_6adnx"]
+
+[sub_resource type="PrismMesh" id="PrismMesh_uhqqe"]
+
+[node name="TestScene" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+mesh = SubResource("CapsuleMesh_6adnx")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
+mesh = SubResource("CapsuleMesh_6adnx")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(5.3, 0, 0, 0, 0.558819, -1.26593, 0, 2.08554, 0.339204, 0, 0, 4)
+mesh = SubResource("PrismMesh_uhqqe")
