@@ -5,7 +5,8 @@ public partial class BasicControls : CharacterBody2D
 {
 	[Export]
 	public int speed { get; set; } = 400;
-	float inputDirection;
+	Vector2 inputDirection;
+	float direction = 0;
 
 	[Export]
 	public int jumpForce { get; set; } = 60;
@@ -13,8 +14,14 @@ public partial class BasicControls : CharacterBody2D
 	[Export]
 	public int gravity { get; set; } = -10;
 
+	[Export]
+	public int maxGrav { get; set; } = -10;
+
 	bool jumpPressed = false;
 	bool jumping = false;
+
+	[Export]
+	public Node2D gravCenter;
 
 	AnimatedSprite2D sprite;
 
@@ -23,10 +30,21 @@ public partial class BasicControls : CharacterBody2D
 		sprite = GetChild<AnimatedSprite2D>(0);
 	}
 
-	Vector2 vel;
+	[Export]
+	Vector2 hVel, vVel;
 	public void GetInput()
 	{
-		inputDirection = Input.GetAxis("left", "right");
+		Vector2 sideDirection;
+		if (IsOnFloor())
+		{
+			sideDirection = GetPerpendicularClockwise(GetFloorNormal());
+			GD.Print("Using floor normal");
+		}
+		else {
+			sideDirection = GetPerpendicularClockwise(UpDirection);//new Vector2(-UpDirection.Y, UpDirection.X);
+		}
+		direction = Input.GetAxis("left", "right");
+		inputDirection = sideDirection * direction;
 
 		jumpPressed = Input.IsActionJustPressed("jump");
 	}
@@ -36,34 +54,39 @@ public partial class BasicControls : CharacterBody2D
 		if ((IsOnFloor() || IsOnCeiling()) && jumping)
 		{
 			Land();
-			if (IsOnCeiling())
-				vel.Y = 0;
+			//if (IsOnCeiling())
+			//vVel = Vector2.Zero;
 		}
-		
+
 
 		GetInput();
-		vel.X = inputDirection * speed;
+		hVel = inputDirection * speed;
 
-//		if(vel.Y < gravity)
-			vel += Vector2.Up * gravity;
+		if(!IsOnFloor()) //isonfloor
+			vVel += UpDirection * gravity;
 
 		if (jumpPressed && !jumping)
 		{
-			GD.Print("bop!");
 			Jump();
 		}
 
-		Velocity = vel;
+		Velocity = hVel + vVel;
+
 		MoveAndSlide();
+
+		if (IsOnFloor())
+			Rotation = GetFloorNormal().Angle() + Mathf.DegToRad(90);
+		else
+			Rotation = UpDirection.Angle() + Mathf.DegToRad(90);
 	}
 
 	public override void _Process(double delta)
 	{
 		if (!jumping)
 		{
-			if (inputDirection != 0)
+			if (direction != 0)
 			{
-				sprite.FlipH = inputDirection < 0;
+				sprite.FlipH = direction < 0;
 				sprite.Play("walking");
 			}
 			else
@@ -72,17 +95,27 @@ public partial class BasicControls : CharacterBody2D
 			}
 		}
 		else {
-			if (inputDirection != 0)
-				sprite.FlipH = inputDirection < 0;
+			if (direction != 0)
+				sprite.FlipH = direction < 0;
 	
 			if (sprite.Frame == 1) {
 				sprite.Play("jumping");
 			}
 		}
+
+		if (Input.IsMouseButtonPressed(MouseButton.Left))
+		{
+			Vector2 mousePos = GetGlobalMousePosition();
+			gravCenter.GlobalPosition = mousePos;
+			vVel = Vector2.Zero;
+		}
+
+		UpDirection = -(gravCenter.GlobalPosition - Position).Normalized();
+
 	}
 
 	void Jump() {
-		vel.Y = UpDirection.Y * jumpForce;
+		vVel = UpDirection * jumpForce;
 		jumping = true;
 		sprite.Play("jump");
 	}
@@ -92,5 +125,10 @@ public partial class BasicControls : CharacterBody2D
 		//await ToSignal(GetTree().CreateTimer(0.25f), "timeout");
 		jumping = false;
 
+	}
+
+
+	Vector2 GetPerpendicularClockwise(Vector2 v) {
+		return new Vector2(-v.Y, v.X);
 	}
 }

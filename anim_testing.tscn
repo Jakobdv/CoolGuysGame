@@ -1,106 +1,8 @@
-[gd_scene load_steps=17 format=3 uid="uid://ci3g3rngu80gc"]
+[gd_scene load_steps=5 format=3 uid="uid://ci3g3rngu80gc"]
 
-[ext_resource type="Texture2D" uid="uid://b1nut86khwqk5" path="res://LilAlien.png" id="1_j52q7"]
-[ext_resource type="Script" uid="uid://pbc4wrdf0khu" path="res://BasicControls.cs" id="1_r5tfv"]
 [ext_resource type="Texture2D" uid="uid://cyhhr8cxrgpt6" path="res://shpays.png" id="1_s7o01"]
+[ext_resource type="PackedScene" uid="uid://dyvnat6v1r0np" path="res://alien_invert_grav.tscn" id="2_vj3ly"]
 [ext_resource type="Texture2D" uid="uid://quexbnhfuykg" path="res://block.png" id="3_r5tfv"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_2q3et"]
-atlas = ExtResource("1_j52q7")
-region = Rect2(0, 0, 280, 351)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_vj3ly"]
-atlas = ExtResource("1_j52q7")
-region = Rect2(840, 0, 280, 351)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_s7o01"]
-atlas = ExtResource("1_j52q7")
-region = Rect2(560, 0, 280, 351)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_r5tfv"]
-atlas = ExtResource("1_j52q7")
-region = Rect2(280, 0, 280, 351)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_aryrb"]
-atlas = ExtResource("1_j52q7")
-region = Rect2(840, 0, 280, 351)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_qvcyj"]
-atlas = ExtResource("1_j52q7")
-region = Rect2(0, 351, 280, 351)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_71n1g"]
-atlas = ExtResource("1_j52q7")
-region = Rect2(280, 351, 280, 351)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_hdiiq"]
-atlas = ExtResource("1_j52q7")
-region = Rect2(560, 351, 280, 351)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_vtgyp"]
-atlas = ExtResource("1_j52q7")
-region = Rect2(840, 351, 280, 351)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_eisjf"]
-animations = [{
-"frames": [{
-"duration": 4.0,
-"texture": SubResource("AtlasTexture_2q3et")
-}, {
-"duration": 4.0,
-"texture": SubResource("AtlasTexture_vj3ly")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_s7o01")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_r5tfv")
-}],
-"loop": true,
-"name": &"jump",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_aryrb")
-}],
-"loop": true,
-"name": &"jumping",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_aryrb")
-}],
-"loop": true,
-"name": &"land",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 0.5,
-"texture": SubResource("AtlasTexture_qvcyj")
-}, {
-"duration": 0.5,
-"texture": SubResource("AtlasTexture_71n1g")
-}, {
-"duration": 0.5,
-"texture": SubResource("AtlasTexture_hdiiq")
-}, {
-"duration": 0.5,
-"texture": SubResource("AtlasTexture_vtgyp")
-}],
-"loop": true,
-"name": &"walking",
-"speed": 5.0
-}]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_j52q7"]
-size = Vector2(222, 271)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2q3et"]
 size = Vector2(1710, 448)
@@ -114,24 +16,11 @@ zoom = Vector2(0.22, 0.22)
 scale = Vector2(2.5, 2.5)
 texture = ExtResource("1_s7o01")
 
-[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+[node name="Aline_InvertGrav" parent="." instance=ExtResource("2_vj3ly")]
 position = Vector2(-38, 1)
-script = ExtResource("1_r5tfv")
-speed = 1000
-jumpForce = 2000
-gravity = -50
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D"]
-sprite_frames = SubResource("SpriteFrames_eisjf")
-animation = &"jump"
-frame_progress = 0.670703
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
-position = Vector2(4, 10.5)
-shape = SubResource("RectangleShape2D_j52q7")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
-position = Vector2(0, 548)
+position = Vector2(0, 924)
 scale = Vector2(3.36, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
@@ -145,8 +34,55 @@ texture = ExtResource("3_r5tfv")
 region_enabled = true
 region_rect = Rect2(0, 0, 1664, 432)
 
+[node name="StaticBody2D4" type="StaticBody2D" parent="."]
+position = Vector2(-17, -1652)
+scale = Vector2(3.36, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D4"]
+shape = SubResource("RectangleShape2D_2q3et")
+
+[node name="Sprite2D2" type="Sprite2D" parent="StaticBody2D4"]
+modulate = Color(0, 0.767704, 0.886721, 1)
+texture_filter = 1
+texture_repeat = 2
+texture = ExtResource("3_r5tfv")
+region_enabled = true
+region_rect = Rect2(0, 0, 1664, 432)
+
+[node name="StaticBody2D5" type="StaticBody2D" parent="."]
+position = Vector2(-2716, -1652)
+rotation = 1.57079
+scale = Vector2(3.36, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D5"]
+shape = SubResource("RectangleShape2D_2q3et")
+
+[node name="Sprite2D2" type="Sprite2D" parent="StaticBody2D5"]
+modulate = Color(0, 0.767704, 0.886721, 1)
+texture_filter = 1
+texture_repeat = 2
+texture = ExtResource("3_r5tfv")
+region_enabled = true
+region_rect = Rect2(0, 0, 1664, 432)
+
+[node name="StaticBody2D6" type="StaticBody2D" parent="."]
+position = Vector2(2780, -1652)
+rotation = 1.57079
+scale = Vector2(3.36, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D6"]
+shape = SubResource("RectangleShape2D_2q3et")
+
+[node name="Sprite2D2" type="Sprite2D" parent="StaticBody2D6"]
+modulate = Color(0, 0.767704, 0.886721, 1)
+texture_filter = 1
+texture_repeat = 2
+texture = ExtResource("3_r5tfv")
+region_enabled = true
+region_rect = Rect2(0, 0, 1664, 432)
+
 [node name="StaticBody2D2" type="StaticBody2D" parent="."]
-position = Vector2(-1200, 177)
+position = Vector2(-722, 618)
 scale = Vector2(0.36, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
@@ -159,8 +95,22 @@ texture = ExtResource("3_r5tfv")
 region_enabled = true
 region_rect = Rect2(0, 0, 1664, 432)
 
+[node name="StaticBody2D7" type="StaticBody2D" parent="."]
+position = Vector2(-2173, 618)
+scale = Vector2(0.36, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D7"]
+shape = SubResource("RectangleShape2D_2q3et")
+
+[node name="Sprite2D2" type="Sprite2D" parent="StaticBody2D7"]
+texture_filter = 1
+texture_repeat = 2
+texture = ExtResource("3_r5tfv")
+region_enabled = true
+region_rect = Rect2(0, 0, 1664, 432)
+
 [node name="StaticBody2D3" type="StaticBody2D" parent="."]
-position = Vector2(-1678, -264)
+position = Vector2(-1200, 177)
 scale = Vector2(0.36, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D3"]
